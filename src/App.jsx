@@ -71,7 +71,7 @@ function App() {
         <SortDropdown onSortChange={handleSortChange} />
         <FilterDropdown onFilterChange={handleFilterChange} />
       </div>
-      <div className="flex flex-col w-full mb-4"> {/* Full width container */}
+      <div className="flex flex-col w-full mb-4 items-center"> {/* Full width container */}
         <div className="flex justify-start mx-20 mb-2"> {/* Align button to the left */}
           <button 
             onClick={() => setShowAddForm(true)} 
@@ -79,6 +79,7 @@ function App() {
           >
             <FaPlus className="mr-2" /> Add Application
           </button>
+          
         </div>
         {showAddForm && <AddApplicationForm onSave={handleAddApplication} onCancel={() => setShowAddForm(false)} />}
         <ApplicationList applications={sortedAndFilteredApplications} />

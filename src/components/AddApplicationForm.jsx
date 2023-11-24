@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const AddApplicationForm = ({ onSave, onCancel }) => {
   const [company, setCompany] = useState('');
   const [position, setPosition] = useState('');
   const [location, setLocation] = useState('');
   const [status, setStatus] = useState('');
+  const formRef = useRef(); // Create a ref for the form
+
+  useEffect(() => {
+    // Function to check if clicked outside of form
+    function handleClickOutside(event) {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        onCancel(); // If the click is outside, close the form
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [formRef, onCancel]); // Only re-run if ref or onCancel changes
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,7 +36,8 @@ const AddApplicationForm = ({ onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div ref={formRef} className="relative w-3/4"> 
+    <form onSubmit={handleSubmit} className="bg-white shadow-md border rounded px-8 pt-6 pb-8 mb-4">
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="company">
           Company
@@ -93,6 +111,7 @@ const AddApplicationForm = ({ onSave, onCancel }) => {
         </button>
       </div>
     </form>
+    </div>
   );
 };
 
