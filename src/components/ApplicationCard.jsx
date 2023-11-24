@@ -4,15 +4,20 @@ import { FaChevronDown } from 'react-icons/fa';
 
 const ApplicationCard = ({ application }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(application.status); 
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+  }
+
   return (
     <div className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md">
       <div 
-        className="p-4 hover:bg-gray-100" 
+        className="p-4 hover:bg-gray-100 cursor-pointer" 
         onClick={toggleDropdown}
       >
         <div className="flex justify-between items-center mb-4">
@@ -22,7 +27,7 @@ const ApplicationCard = ({ application }) => {
             <p className="text-gray-500 text-sm">{application.location}</p>
           </div>
           <Timeline status={application.status} statusDates={application.statusDates} />
-          <FaChevronDown className="ml-2 text-gray-600" />
+          <FaChevronDown className={`ml-2 text-gray-600 ${isDropdownOpen ? 'transform rotate-180' : ''}`} />
         </div>
       </div>
 
@@ -33,8 +38,16 @@ const ApplicationCard = ({ application }) => {
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Status
               </label>
-              <select className="shadow border rounded w-full py-2 px-3 text-gray-700">
-                {/* Populate options based on your status data */}
+              <select 
+                className="shadow border rounded w-full py-2 px-3 text-gray-700"
+                value={selectedStatus} // Step 4
+                onChange={handleStatusChange}
+              >
+                <option value="Sent">Sent</option>
+                <option value="Confirmation">Confirmation</option>
+                <option value="Action Needed">Action Needed</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
               </select>
             </div>
             <div className="flex-1 ml-2">
